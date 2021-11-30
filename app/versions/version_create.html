@@ -1,0 +1,43 @@
+<script>
+  window.$ = window.jQuery = require( '../../js/jquery-3.6.0.min.js' );
+</script>
+
+<!DOCTYPE html>
+<html lang="de" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../css/app.css">
+    <script src="../../js/app.js"></script>
+    <script src="./version_create.js"></script>
+  </head>
+  <body>
+    <div id="menu-field">
+      <button class="btn-default menu-button active">New Version</button>
+      <button class="btn-default menu-button" onclick="go_to( './version_index.html' )">Display Versions</button>
+    </div>
+
+    <h1>New Version</h1>
+
+    <div class="form-space">
+      <label>Version number</label>
+      <br />
+      <input id="versionnumber" />
+      <br />
+    </div>
+
+    <hr />
+
+    <div class="form-space">
+      <label>ReleaseDate</label>
+      <br />
+      <input id="versionrelease" />
+      <br />
+    </div>
+
+    <hr />
+
+    <div class="">
+      <button class="submit" onclick="save_version()">Create</button>
+    </div>
+  </body>
+</html>

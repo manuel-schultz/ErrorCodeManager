@@ -1,0 +1,72 @@
+<script>
+  window.$ = window.jQuery = require( '../../js/jquery-3.6.0.min.js' );
+</script>
+
+<!DOCTYPE html>
+<html lang="de" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../css/app.css">
+    <script src="../../js/app.js"></script>
+    <script src="./errorcode_create.js"></script>
+  </head>
+  <body>
+    <div id="menu-field">
+      <button class="btn-default menu-button active">New Error Code</button>
+      <button class="btn-default menu-button" onclick="go_to( './errorcode_index.html' )">Display Error Codes</button>
+    </div>
+    <h1>New Error Code</h1>
+
+    <div class="form-space">
+      <label>Type</label>
+      <br />
+      <div class="type-button-space">
+        <!-- buttons are implemented by js function create_error_type_buttons() -->
+      </div>
+    </div>
+
+    <hr />
+
+    <div style="display: flex; justify-content: space-between;">
+      <div class="form-space" style="width: calc(50% - 4px);">
+        <label>Error Code</label>
+        <br />
+        <div style="display: flex;">
+          <input id="error-code-prefix" disabled="true" />
+          <input id="error-code" />
+        </div>
+        <br />
+      </div>
+
+      <div class="form-space" style="width: calc(50% - 4px);">
+        <label>First Version</label>
+        <br />
+        <select id="introduced-in-version"><!-- options are implemented by js function create_version_select_options() --></select>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="form-space">
+      <label>Title</label>
+      <br />
+      <input id="errorcode-title" />
+      <br />
+    </div>
+
+    <hr />
+
+    <div class="form-space">
+      <label>Description</label>
+      <br />
+      <input id="errorcode-description" />
+      <br />
+    </div>
+
+    <hr />
+
+    <div>
+      <button class="submit" onclick="save_error_code()">Create</button>
+    </div>
+  </body>
+</html>

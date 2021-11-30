@@ -1,0 +1,59 @@
+<script>
+  window.$ = window.jQuery = require( '../../js/jquery-3.6.0.min.js' );
+</script>
+
+<!DOCTYPE html>
+<html lang="de" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../css/app.css">
+    <script src="../../js/app.js"></script>
+    <script src="./errorcodetype_create.js"></script>
+  </head>
+  <body>
+    <div id="menu-field">
+      <button class="btn-default menu-button active">New ErrorType</button>
+      <button class="btn-default menu-button" onclick="go_to( './errorcodetype_index.html' )">Display ErrorTypes</button>
+    </div>
+    <h1>New ErrorType</h1>
+
+    <div class="form-space">
+      <label>Number</label>
+      <br />
+      <input id="errorcodetype-number" />
+      <br />
+    </div>
+
+    <hr />
+
+    <div class="form-space">
+      <label>Description</label>
+      <br />
+      <input id="errorcodetype-description" />
+      <br />
+    </div>
+
+    <hr />
+
+    <div class="form-space">
+      <label>Prefix</label>
+      <br />
+      <input id="errorcodetype-prefix" />
+      <br />
+    </div>
+
+    <hr />
+
+    <div class="form-space">
+      <label>Length</label>
+      <br />
+      <input id="errorcodetype-length" />
+      <br />
+    </div>
+
+    <hr />
+    <div class="">
+      <button class="submit" onclick="save_errorcode_type()">Create</button>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,23 @@
+<script>
+  window.$ = window.jQuery = require( '../../js/jquery-3.6.0.min.js' );
+</script>
+
+<!DOCTYPE html>
+<html lang="de" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../css/app.css">
+    <script src="../../js/app.js"></script>
+    <script src="./errorcode_index.js"></script>
+  </head>
+  <body>
+    <div id="menu-field">
+      <button class="btn-default menu-button" onclick="go_to( './errorcode_create.html' )">New Error Code</button>
+      <button class="btn-default menu-button active">Display Error Codes</button>
+    </div>
+    <h1>Error Codes</h1>
+    <div id="error_codes_display_space" class="">
+
+    </div>
+  </body>
+</html>

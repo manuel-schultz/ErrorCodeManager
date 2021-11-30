@@ -1,0 +1,21 @@
+<script>
+  window.$ = window.jQuery = require( '../../js/jquery-3.6.0.min.js' );
+</script>
+
+<!DOCTYPE html>
+<html lang="de" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../css/app.css">
+    <script src="../../js/app.js"></script>
+    <script src="./version_index.js"></script>
+  </head>
+  <body>
+    <div id="menu-field">
+      <button class="btn-default menu-button" onclick="go_to( './version_create.html' )">New Version</button>
+      <button class="btn-default menu-button active">Display Versions</button>
+    </div>
+    <h1>Versions</h1>
+    <div id="versions_display_space"></div>
+  </body>
+</html>
