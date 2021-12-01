@@ -1,9 +1,9 @@
-const electron = require( 'electron' );
-const remote   = require( 'electron' ).remote;
-const {app}    = require( 'electron' );
-const url      = require( 'url' );
-const fs       = require( 'fs' );
-const path     = require( 'path' );
+const electron          = require( 'electron' );
+const remote            = require( '@electron/remote' );
+const url               = require( 'url' );
+const fs                = require( 'fs' );
+const path              = require( 'path' );
+const { BrowserWindow } = require( '@electron/remote' );
 
 $( document ).ready( function() {
   let datapath = dataPath();
@@ -105,9 +105,52 @@ function save_error_code() {
     "implemented": intro_version
   }
 
+  var error_failures = [];
+  for ( let [key, value] of Object.entries(error)) {
+    if ( !value ) {
+      if ( key === 'implemented' ) {
+        error_failures.push( 'version' );
+        continue;
+      }
+      error_failures.push( key );
+    }
+  }
+
+  for ( let entry of ['prefix', 'suffix', 'error_code_str' ] ) {
+    if ( error_failures.indexOf( entry ) > -1 ) {
+      error_failures[ error_failures.indexOf( entry ) ] = 'error_code';
+    }
+  }
+
+  if ( error_failures.length !== 0 ) {
+    error_failures = error_failures.unique();
+    for ( let entry of error_failures ) {
+      error_failures[ error_failures.indexOf( entry ) ] = '• ' + entry.replace( '_', ' ' ).capitalizeEveryWord()
+    }
+
+    remote.dialog.showMessageBoxSync({
+      title: 'Error',
+      message: 'Wrong data submitted!',
+      type: 'error',
+      detail: 'Following Fields don\'t have acceptable values:\n' + error_failures.join( ',\n' )
+    });
+    return;
+  }
+
   let datapath = dataPath();
   fs.readFile( path.join( datapath, 'errors.json' ), function( err, data ) {
     let errors = JSON.parse( data );
+
+    if ( searchInJsonForIndex( errors.errors, 'error_code', parseInt( error_code ) ) ) {
+      remote.dialog.showMessageBoxSync({
+        title: 'Error',
+        message: 'Duplicated entry attribute!',
+        type: 'error',
+        detail: 'Choose another Error Code'
+      });
+      return;
+    }
+
     errors.errors.push(error);
 
 

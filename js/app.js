@@ -1,3 +1,13 @@
+String.prototype.capitalizeEveryWord = function () {
+  return this.replace( /(^\w|\s\w)/g, m => m.toUpperCase() )
+}
+
+Array.prototype.unique = function() {
+  return this.filter( function ( value, index, self ) {
+    return self.indexOf( value ) === index;
+  });
+}
+
 function go_to( path ) {
   window.location = path;
 }
@@ -14,7 +24,11 @@ function sortJson( json, property, asc ) {
 }
 
 function searchInJsonForIndex( json, property, value ) {
-  for ( let i = 0; i < json.length; i++ ) {
+  for ( let i = 0; i <= json.length; i++ ) {
+    if ( json.length === i ) {
+      // if not existent in the json, return false
+      return false;
+    }
     if ( json[i][property] === value ) {
       return i;
     }
