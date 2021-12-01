@@ -64,6 +64,14 @@ function createMenu( win ) {
       label: 'ErrorCodeManager',
       submenu: [
         { role: 'about' },
+        { type: 'separator' },
+        {
+          label: 'Export Data',
+          click() {
+            exportAllData( win );
+          }
+        },
+        { type: 'separator' },
         {
           label: 'Open API Doku',
           click() {
@@ -139,6 +147,53 @@ function changePage( win, filename ) {
       slashes: true
     })
   );
+}
+
+function exportAllData( window ) {
+  let fileName = 'ErrorCodeManager-export-data--' + new Date().toISOString().replace('T', '--').replaceAll( ':', '-' ).split('.')[0] + '.json';
+  let pathToSave = require( 'electron' ).dialog.showSaveDialogSync(
+    window,
+    {
+      defaultPath: path.join( app.getPath( 'downloads' ), fileName ),
+      filters: [
+        { name: 'JSON-File', extensions: [ 'json' ] }
+      ]
+    }
+  );
+
+  if ( !pathToSave ) {
+    return;
+  }
+
+  var files = [ 'apiversions', 'errorcodetypes', 'errors' ]
+  let filejson = {};
+
+  for ( let fileName of files ) {
+    let fileContent = fs.readFileSync( path.join( path.join( app.getPath( 'userData' ), 'data' ), fileName + '.json' ), { encoding:'utf8' } );
+    filejson[fileName] = JSON.parse( fileContent );
+  }
+
+  try {
+    let exportFile = fs.writeFileSync( pathToSave, JSON.stringify( filejson, null, '\t' ), function( err, data ) { } );
+  } catch {
+    return;
+  }
+
+  let result = require( 'electron' ).dialog.showMessageBoxSync(
+    window,
+    {
+      title: 'Success',
+      type: 'info',
+      message: 'Data was successfully exported!',
+      buttons: [ 'Ok', 'Open Export' ],
+      cancelId: -1
+    }
+  );
+
+  if ( result === 1 ) {
+    // { 'ESC': -1, 'X-Button': -1, 'OK': 0, 'Open Export': 1 }
+    require( 'electron' ).shell.openExternal( path.dirname( pathToSave ) );
+  }
 }
 
 app.on("ready", newApp);
