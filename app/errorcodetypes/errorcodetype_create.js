@@ -22,6 +22,27 @@ function save_errorcode_type() {
     "length": parseInt( numberlength ),
   }
 
+  var errortype_failures = [];
+  for ( let [key, value] of Object.entries(errortype)) {
+    if ( !value && value !== parseInt( 0 ) ) {
+      errortype_failures.push( key );
+    }
+  }
+
+  if ( errortype_failures.length !== 0 ) {
+    for ( let entry of errortype_failures ) {
+      errortype_failures[ errortype_failures.indexOf( entry ) ] = '• ' + entry.capitalizeEveryWord()
+    }
+
+    remote.dialog.showMessageBoxSync({
+      title: 'Error',
+      message: 'Wrong data submitted!',
+      type: 'error',
+      detail: 'Following Fields don\'t have acceptable values:\n' + errortype_failures.join( ',\n' )
+    });
+    return;
+  }
+
   let datapath = dataPath();
   fs.readFile( path.join( datapath, 'errorcodetypes.json' ), function( err, data ) {
     let errortypes = JSON.parse( data );
