@@ -3,6 +3,9 @@ const remote                       = require( 'electron' ).remote;
 const url                          = require( 'url' );
 const fs                           = require( 'fs' );
 const path                         = require( 'path' );
+const remoteMain                   = require( '@electron/remote/main' );
+
+remoteMain.initialize();
 
 function newApp() {
   // set DataPath
@@ -40,6 +43,8 @@ function newApp() {
     }
     // frame: false //Remove frame to hide default menu
   });
+
+  remoteMain.enable( win.webContents );
 
   win.loadURL(
     url.format({
