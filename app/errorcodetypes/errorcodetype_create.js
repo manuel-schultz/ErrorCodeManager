@@ -1,5 +1,5 @@
 const electron = require( 'electron' );
-const remote   = require( 'electron' ).remote;
+const remote   = require( '@electron/remote' );
 const {app}    = require( 'electron' );
 const url      = require( 'url' );
 const fs       = require( 'fs' );
@@ -25,6 +25,17 @@ function save_errorcode_type() {
   let datapath = dataPath();
   fs.readFile( path.join( datapath, 'errorcodetypes.json' ), function( err, data ) {
     let errortypes = JSON.parse( data );
+
+    if ( searchInJsonForIndex( errortypes.errorcodetypes, 'number', parseInt( number ) ) !== false ) {
+      remote.dialog.showMessageBoxSync({
+        title: 'Error',
+        message: 'Duplicated entry attribute!',
+        type: 'error',
+        detail: 'Choose another Number.'
+      });
+      return;
+    }
+
     errortypes.errorcodetypes.push( errortype );
 
     fs.writeFile( path.join( datapath, 'errorcodetypes.json' ), JSON.stringify( errortypes, null, '\t' ), function( err, data ) {
