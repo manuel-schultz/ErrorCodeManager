@@ -18,6 +18,27 @@ function save_version() {
     "release": version_release
   }
 
+  var version_failures = [];
+  for ( let [key, value] of Object.entries(version)) {
+    if ( !value ) {
+      version_failures.push( key );
+    }
+  }
+
+  if ( version_failures.length !== 0 ) {
+    for ( let entry of version_failures ) {
+      version_failures[ version_failures.indexOf( entry ) ] = '• ' + entry.capitalizeEveryWord()
+    }
+
+    remote.dialog.showMessageBoxSync({
+      title: 'Error',
+      message: 'Wrong data submitted!',
+      type: 'error',
+      detail: 'Following Fields don\'t have acceptable values:\n' + version_failures.join( ',\n' )
+    });
+    return;
+  }
+
   let datapath = dataPath();
   fs.readFile( path.join( datapath, 'apiversions.json' ), function( err, data ) {
     let versions = JSON.parse( data );
