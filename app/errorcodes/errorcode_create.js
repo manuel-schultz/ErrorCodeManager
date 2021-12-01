@@ -1,9 +1,9 @@
-const electron = require( 'electron' );
-const remote   = require( 'electron' ).remote;
-const {app}    = require( 'electron' );
-const url      = require( 'url' );
-const fs       = require( 'fs' );
-const path     = require( 'path' );
+const electron          = require( 'electron' );
+const remote            = require( '@electron/remote' );
+const url               = require( 'url' );
+const fs                = require( 'fs' );
+const path              = require( 'path' );
+const { BrowserWindow } = require( '@electron/remote' );
 
 $( document ).ready( function() {
   let datapath = dataPath();
@@ -108,6 +108,17 @@ function save_error_code() {
   let datapath = dataPath();
   fs.readFile( path.join( datapath, 'errors.json' ), function( err, data ) {
     let errors = JSON.parse( data );
+
+    if ( searchInJsonForIndex( errors.errors, 'error_code', parseInt( error_code ) ) ) {
+      remote.dialog.showMessageBoxSync({
+        title: 'Error',
+        message: 'Duplicated entry attribute!',
+        type: 'error',
+        detail: 'Choose another Error Code'
+      });
+      return;
+    }
+
     errors.errors.push(error);
 
 
