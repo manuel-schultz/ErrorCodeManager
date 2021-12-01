@@ -1,3 +1,13 @@
+String.prototype.capitalizeEveryWord = function () {
+  return this.replace( /(^\w|\s\w)/g, m => m.toUpperCase() )
+}
+
+Array.prototype.unique = function() {
+  return this.filter( function ( value, index, self ) {
+    return self.indexOf( value ) === index;
+  });
+}
+
 function go_to( path ) {
   window.location = path;
 }
