@@ -108,7 +108,7 @@ function save_error_code() {
 
   var error_failures = [];
   for ( let [key, value] of Object.entries(error)) {
-    if ( !value ) {
+    if ( !value && value !== parseInt( 0 ) ) {
       if ( key === 'implemented' ) {
         error_failures.push( 'version' );
         continue;
