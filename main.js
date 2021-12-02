@@ -36,6 +36,7 @@ function newApp() {
   const win = new BrowserWindow({
     width: 560,
     height: 940,
+    icon: 'img/icon.png',
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
