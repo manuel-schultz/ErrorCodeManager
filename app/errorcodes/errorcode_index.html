@@ -18,7 +18,8 @@
     <h1>Error Codes</h1>
 
     <div style="text-align: right;">
-      <button class="btn btn-default" style="padding: 4px;" onclick="toggle_filter_wraper_display_status()"><img src="../../img/filter.png" height="20px"></button>
+      <button id="sort_button" class="btn btn-default" style="padding: 4px;" onclick="change_sorting(this)" data-direction="asc"><img src="../../img/sorting.png" height="20px"></button>
+      <button id="filter_button" class="btn btn-default" style="padding: 4px;" onclick="toggle_filter_wraper_display_status()"><img src="../../img/filter.png" height="20px"></button>
     </div>
     <div id="filter_wraper" class="hidden" style="display: flex; padding: 10px 0px; justify-content: space-between; flex-wrap: wrap;">
       <input id="filter_searchquery" type="text" placeholder="Search ..." style="width: 100%; margin-bottom: 10px;" onkeyup="display_error_codes()">

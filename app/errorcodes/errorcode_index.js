@@ -20,7 +20,7 @@ function display_error_codes() {
 
     errors.errors = errors_filtering( errors.errors );
 
-    errors = sortJson( errors.errors, 'error_code', true );
+    errors = sortJson( errors.errors, 'error_code', $( 'button#sort_button' ).data( 'direction' ) === 'asc' );
 
     $.each( errors, function( index, error ) {
       let div = "<div class='bordered-box errorcode-box'>" +
@@ -106,4 +106,14 @@ function errors_filtering( errors ) {
   }
 
   return errors;
+}
+
+function change_sorting( btn ) {
+  let button = $( btn );
+  if ( button.data( 'direction' ) === 'asc' ) {
+    button.data( 'direction', 'desc' );
+  } else {
+    button.data( 'direction', 'asc' );
+  }
+  display_error_codes();
 }
