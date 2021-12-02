@@ -77,6 +77,12 @@ function createMenu( win ) {
             importAllData( win );
           }
         },
+        {
+          label: 'Clear Data',
+          click() {
+            clearData( win );
+          }
+        },
         { type: 'separator' },
         {
           label: 'Open API Doku',
@@ -265,6 +271,39 @@ function importAllData( window ) {
       title: 'Success',
       type: 'info',
       message: 'Data was successfully imported!',
+      buttons: [ 'Ok' ]
+    }
+  );
+}
+
+function clearData( window ) {
+  let result = require( 'electron' ).dialog.showMessageBoxSync(
+    window,
+    {
+      title: 'Warning',
+      type: 'warning',
+      message: 'Do you realy want to delete your Data?',
+      buttons: [ 'Cancel', 'No!', 'Yes!' ],
+      cancelId: -1,
+      noLink: true
+    }
+  );
+
+  if ( result === 2 ) {
+    var datapath = path.join( app.getPath( 'userData' ), 'data' );
+    fs.writeFile( path.join( datapath, 'apiversions.json' ), JSON.stringify( { "versions": [] }, null, '\t' ), function( err, data ) { } );
+    fs.writeFile( path.join( datapath, 'errorcodetypes.json' ), JSON.stringify( { "errorcodetypes": [] }, null, '\t' ), function( err, data ) { } );
+    fs.writeFile( path.join( datapath, 'errors.json' ), JSON.stringify( { "errors": [] }, null, '\t' ), function( err, data ) { } );
+  } else {
+    return;
+  }
+
+  require( 'electron' ).dialog.showMessageBoxSync(
+    window,
+    {
+      title: 'Success',
+      type: 'info',
+      message: 'Data was successfully deleted!',
       buttons: [ 'Ok' ]
     }
   );
