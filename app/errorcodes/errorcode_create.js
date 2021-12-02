@@ -49,6 +49,7 @@ function choose_error_type( btn ) {
   btn.addClass( 'active' );
 
   let error_code = get_next_errorcode( error_prefix, btn.data( 'errorlength' ) );
+  $( 'input#error-code' ).focus();
 }
 
 function get_next_errorcode( error_prefix, error_length ) {
