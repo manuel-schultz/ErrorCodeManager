@@ -3,9 +3,12 @@ const path = require( 'path' );
 
 $( document ).ready( function() {
   display_error_codes();
+  fill_filter_options();
+  $( 'div#filter_wraper' ).css( 'display', 'none' );
 });
 
 function display_error_codes() {
+  $( 'div#error_codes_display_space' ).html( '' );
   let datapath = dataPath();
   fs.readFile( path.join( datapath, 'errors.json' ), function( err, data ) {
     if ( err ) {
@@ -14,8 +17,10 @@ function display_error_codes() {
     }
 
     let errors = JSON.parse( data );
+
+    errors.errors = errors_filtering( errors.errors );
+
     errors = sortJson( errors.errors, 'error_code', true );
-    let table = document.createElement( 'table' );
 
     $.each( errors, function( index, error ) {
       let div = "<div class='bordered-box errorcode-box'>" +
@@ -45,9 +50,46 @@ function delete_error_code( error_to_delete ) {
       if ( err ) {
         return console.error( err );
       }
-      $( 'div#error_codes_display_space' ).html( '' );
       display_error_codes();
     });
 
   });
+}
+
+function fill_filter_options() {
+  let datapath       = dataPath();
+  let apiversions    = JSON.parse( fs.readFileSync( path.join( datapath, 'apiversions.json' ), { encoding:'utf8' } ) ).versions;
+  let errorcodetypes = JSON.parse( fs.readFileSync( path.join( datapath, 'errorcodetypes.json' ), { encoding:'utf8' } ) ).errorcodetypes;
+
+  $.each( apiversions, function( index, version ) {
+    $( 'select#filter_api_versions' ).append( new Option( version.version, version.version ) );
+  });
+  $.each( errorcodetypes, function( index, type ) {
+    $( 'select#filter_errorcode_types' ).append( new Option( type.number, type.prefix ) );
+  });
+}
+
+function toggle_filter_wraper_display_status() {
+  $( 'div#filter_wraper' ).slideToggle( 'medium', function() {
+    if ( $( this ).is( ':visible' ) ) {
+      $( this ).css( 'display', 'flex' );
+    }
+  });
+}
+
+function errors_filtering( errors ) {
+  if ( $( 'select#filter_api_versions' ).val() === '' && $( 'select#filter_errorcode_types' ).val() === '' ) {
+    console.log( 'No Filters enabled' );
+    return errors;
+  }
+
+  if ( $( 'select#filter_api_versions' ).val() !== '' ) {
+    errors = errors.filter( error => error.implemented === $( 'select#filter_api_versions' ).val().toString() )
+  }
+
+  if ( $( 'select#filter_errorcode_types' ).val() !== '' ) {
+    errors = errors.filter( error => error.prefix === parseInt( $( 'select#filter_errorcode_types' ).val() ) )
+  }
+
+  return errors;
 }

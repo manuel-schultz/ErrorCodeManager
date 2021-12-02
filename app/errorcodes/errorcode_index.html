@@ -16,6 +16,19 @@
       <button class="btn-default menu-button active">Display Error Codes</button>
     </div>
     <h1>Error Codes</h1>
+
+    <div style="text-align: right;">
+      <button class="btn btn-default" style="padding: 4px;" onclick="toggle_filter_wraper_display_status()"><img src="../../img/filter.png" height="20px"></button>
+    </div>
+    <div id="filter_wraper" class="hidden" style="display: flex; padding: 10px 0px; justify-content: space-between;">
+      <select id="filter_api_versions" onchange="display_error_codes()" style="width: calc(50% - 4px);">
+        <option value="">All Versions</option>
+      </select>
+      <select id="filter_errorcode_types" onchange="display_error_codes()" style="width: calc(50% - 4px);">
+        <option value="">All Types</option>
+      </select>
+    </div>
+
     <div id="error_codes_display_space" class="">
 
     </div>
