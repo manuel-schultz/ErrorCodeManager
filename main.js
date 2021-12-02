@@ -71,6 +71,12 @@ function createMenu( win ) {
             exportAllData( win );
           }
         },
+        {
+          label: 'Import Data',
+          click() {
+            importAllData( win );
+          }
+        },
         { type: 'separator' },
         {
           label: 'Open API Doku',
@@ -193,6 +199,88 @@ function exportAllData( window ) {
   if ( result === 1 ) {
     // { 'ESC': -1, 'X-Button': -1, 'OK': 0, 'Open Export': 1 }
     require( 'electron' ).shell.openExternal( path.dirname( pathToSave ) );
+  }
+}
+
+function importAllData( window ) {
+  var datapath = path.join( app.getPath( 'userData' ), 'data' );
+  let mode = require( 'electron' ).dialog.showMessageBoxSync(
+    window,
+    {
+      title: 'Warning',
+      type: 'warning',
+      message: 'Do you want to override your Data?',
+      buttons: [ 'Cancel', 'Yes, override Data!', 'No, combine Data!' ],
+      cancelId: -1
+    }
+  );
+
+  if ( mode < 1 ) {
+    // { 'ESC': -1, 'X-Button': -1, 'Cancel': 0, 'Yes, override Data!': 1, 'No, combine Data': 2 }
+    return;
+  }
+
+  let fileToImport = require( 'electron' ).dialog.showOpenDialogSync(
+    window,
+    {
+      defaultPath: app.getPath( 'downloads' ),
+      filters: [
+        { name: 'JSON-File', extensions: [ 'json' ] }
+      ]
+    }
+  );
+
+  if ( !fileToImport ) {
+    return;
+  }
+
+
+  let fileContent = fs.readFileSync( fileToImport[0], { encoding:'utf8' } );
+  fileContent = JSON.parse( fileContent );
+
+  if ( mode === 1 ) {
+    Object.keys( fileContent ).forEach( function( key ) {
+      let json = fileContent[ key ];
+      fs.writeFile( path.join( datapath, key + '.json' ), JSON.stringify( json, null, '\t' ), function( err, data ) { } );
+    });
+  } else if (mode === 2) {
+    let filejsonnames       = { 'apiversions': 'versions', 'errorcodetypes': 'errorcodetypes', 'errors': 'errors' };
+    let comparisonattribute = { 'apiversions': 'version', 'errorcodetypes': 'number', 'errors': 'error_code' };
+    Object.keys( fileContent ).forEach( function( key ) {
+      let json = fileContent[ key ];
+      let current_filedata = JSON.parse( fs.readFileSync( path.join( datapath, key + '.json' ), 'utf8' ) );
+      for ( let element of fileContent[ key ][ filejsonnames[ key ] ] ) {
+        if ( searchInJsonForIndex( current_filedata[ filejsonnames[ key ] ], comparisonattribute[ key ], element[ comparisonattribute[ key ] ] ) === false ) {
+          current_filedata[ filejsonnames[ key ] ].push( element )
+        }
+      }
+
+      fs.writeFile( path.join( datapath, key + '.json' ), JSON.stringify( json, null, '\t' ), function( err, data ) { } );
+    });
+  }
+
+  require( 'electron' ).dialog.showMessageBoxSync(
+    window,
+    {
+      title: 'Success',
+      type: 'info',
+      message: 'Data was successfully imported!',
+      buttons: [ 'Ok' ]
+    }
+  );
+}
+
+// Thats not buenno to just copy paste the function from app.js!
+// TODO: Find a way to call app.js' function instead!
+function searchInJsonForIndex( json, property, value ) {
+  for ( let i = 0; i <= json.length; i++ ) {
+    if ( json.length === i ) {
+      // if not existent in the json, return false
+      return false;
+    }
+    if ( json[i][property] === value ) {
+      return i;
+    }
   }
 }
 
