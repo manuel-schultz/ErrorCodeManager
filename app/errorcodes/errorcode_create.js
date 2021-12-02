@@ -170,3 +170,13 @@ function clear_all() {
   $( 'input#errorcode-description' ).val( '' );
   $( 'button.error-type-button'    ).removeClass( 'active' );
 }
+
+function leadingZeros( input ) {
+  if ( !isNaN( input.value ) ) {
+    let requestedlength  = $( 'button.btn-default.error-type-button.active' ).data( 'errorlength' );
+    let inputvalue       = input.value.toString();
+    let inputvaluestring = '0'.repeat( requestedlength - inputvalue.length ) + inputvalue;
+
+    input.value = inputvaluestring;
+  }
+}
