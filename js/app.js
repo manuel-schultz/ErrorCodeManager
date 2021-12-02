@@ -1,3 +1,13 @@
+$( 'document' ).ready( function() {
+  $( 'div.form-space input, div.form-space select' ).keypress( function( e ) {
+    if ( e.keyCode === 13 && e.key === 'Enter' ) {
+      if ( $( 'button.submit' ).length > 0 ) {
+        $( 'button.submit' ).click();
+      }
+    }
+  });
+});
+
 String.prototype.capitalizeEveryWord = function () {
   return this.replace( /(^\w|\s\w)/g, m => m.toUpperCase() )
 }
