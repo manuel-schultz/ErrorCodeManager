@@ -78,7 +78,7 @@ function toggle_filter_wraper_display_status() {
 }
 
 function errors_filtering( errors ) {
-  if ( $( 'select#filter_api_versions' ).val() === '' && $( 'select#filter_errorcode_types' ).val() === '' ) {
+  if ( $( 'select#filter_api_versions' ).val() === '' && $( 'select#filter_errorcode_types' ).val() === '' && $( 'input#filter_searchquery' ).val() === '' ) {
     console.log( 'No Filters enabled' );
     return errors;
   }
@@ -89,6 +89,20 @@ function errors_filtering( errors ) {
 
   if ( $( 'select#filter_errorcode_types' ).val() !== '' ) {
     errors = errors.filter( error => error.prefix === parseInt( $( 'select#filter_errorcode_types' ).val() ) )
+  }
+
+  if ( $( 'input#filter_searchquery' ).val() !== '' ) {
+    errors = errors.filter( function ( error, index ) {
+      if ( error.error_code_str.toLowerCase().match( $( 'input#filter_searchquery' ).val().toLowerCase() ) ) {
+        return true;
+      }
+      if ( error.title.toLowerCase().match( $( 'input#filter_searchquery' ).val().toLowerCase() ) ) {
+        return true;
+      }
+      if ( error.description.toLowerCase().match( $( 'input#filter_searchquery' ).val().toLowerCase() ) ) {
+        return true;
+      }
+    });
   }
 
   return errors;
