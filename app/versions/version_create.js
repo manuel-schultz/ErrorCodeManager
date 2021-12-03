@@ -60,6 +60,12 @@ function save_version() {
         return console.error( err );
       }
       clear_all();
+
+      remote.dialog.showMessageBox({
+        title: 'Success',
+        message: 'Data saved successfully!',
+        type: 'info'
+      });
     });
   });
 }
