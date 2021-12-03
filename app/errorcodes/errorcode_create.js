@@ -160,6 +160,12 @@ function save_error_code() {
         return console.error( err );
       }
       clear_all();
+
+      remote.dialog.showMessageBox({
+        title: 'Success',
+        message: 'Data saved successfully!',
+        type: 'info'
+      });
     });
   });
 }

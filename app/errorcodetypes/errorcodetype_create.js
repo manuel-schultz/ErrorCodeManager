@@ -64,6 +64,12 @@ function save_errorcode_type() {
         return console.error( err );
       }
       clear_all();
+
+      remote.dialog.showMessageBox({
+        title: 'Success',
+        message: 'Data saved successfully!',
+        type: 'info'
+      });
     });
   });
 }
