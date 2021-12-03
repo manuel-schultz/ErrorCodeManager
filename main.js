@@ -64,7 +64,12 @@ function createMenu( win ) {
     {
       label: 'ErrorCodeManager',
       submenu: [
-        { role: 'about' },
+        {
+          label: 'About ' + app.getName(),
+          click() {
+            openCustomAboutPanel( win );
+          }
+        },
         { type: 'separator' },
         {
           label: 'Export Data',
@@ -308,6 +313,28 @@ function clearData( window ) {
       buttons: [ 'Ok' ]
     }
   );
+}
+
+function openCustomAboutPanel( parent ) {
+  var win = new BrowserWindow({
+    width: 530,
+    height: 770,
+    resizable: false,
+    title: 'About ' + app.getName(),
+    icon: 'img/icon.png',
+    autoHideMenuBar: true,
+    minimizable: false,
+    maximizable: false,
+    parent: parent,
+    modal: true,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true
+    }
+  });
+  remoteMain.enable( win.webContents );
+  win.loadFile( 'app/about/aboutwindow.html' );
 }
 
 // Thats not buenno to just copy paste the function from app.js!

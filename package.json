@@ -1,5 +1,5 @@
 {
-  "name": "errorcodemanager",
+  "name": "ErrorCodeManager",
   "version": "1.0.0",
   "description": "A small App to manage your own ErrorCodes",
   "main": "main.js",
