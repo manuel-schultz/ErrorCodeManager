@@ -136,3 +136,7 @@ input#error-code::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+div#app-description {
+  font-style: italic;
+}
