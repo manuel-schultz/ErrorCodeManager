@@ -10,10 +10,10 @@ remoteMain.initialize();
 function newApp() {
   // set DataPath
   var datapath = path.join( app.getPath( 'userData' ), 'data' );
-  fs.writeFile( path.join( path.resolve( __dirname, 'config' ), 'datapath.txt' ), datapath, function( err, data ) { } );
+  fs.writeFile( path.join( __dirname, 'config', 'datapath.txt' ), datapath, function( err, data ) { } );
   // fs.writeFile( path.join( path.resolve( __dirname, 'config' ), 'apidokupath.txt' ), "https://kassa.at/offizielle-api/", function( err, data ) { } );
 
-  if ( !fs.existsSync( path.join( app.getPath( 'userData' ), 'data' ) ) ) {
+  if ( !fs.existsSync( datapath ) ) {
     fs.mkdirSync( datapath );
   }
 
@@ -36,7 +36,7 @@ function newApp() {
   const win = new BrowserWindow({
     width: 560,
     height: 940,
-    icon: 'img/icon.png',
+    icon: path.join( __dirname, 'img', 'icon.png' ),
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -47,9 +47,9 @@ function newApp() {
 
   remoteMain.enable( win.webContents );
 
-  win.loadURL(
+  win.loadFile(
     url.format({
-      pathname: 'app/errorcodes/errorcode_create.html',
+      pathname: path.join( __dirname, 'app', 'errorcodes', 'errorcode_create.html' ),
       slashes: true
     })
   );
@@ -159,9 +159,9 @@ function createMenu( win ) {
 }
 
 function changePage( win, filename ) {
-  win.loadURL(
+  win.loadFile(
     url.format({
-      pathname: filename,
+      pathname: path.join( __dirname, filename ),
       slashes: true
     })
   );
@@ -321,7 +321,7 @@ function openCustomAboutPanel( parent ) {
     height: 770,
     resizable: false,
     title: 'About ' + app.getName(),
-    icon: 'img/icon.png',
+    icon: path.join( __dirname, 'img', 'icon.png' ),
     autoHideMenuBar: true,
     minimizable: false,
     maximizable: false,
