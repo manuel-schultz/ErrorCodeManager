@@ -1,5 +1,6 @@
-const fs   = require( 'fs' );
-const path = require( 'path' );
+const fs     = require( 'fs' );
+const path   = require( 'path' );
+const remote = require( '@electron/remote' );
 
 $( document ).ready( function() {
   display_error_codes();

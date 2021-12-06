@@ -46,5 +46,5 @@ function searchInJsonForIndex( json, property, value ) {
 }
 
 function dataPath() {
-  return fs.readFileSync( path.join( path.resolve( 'config' ), 'datapath.txt' ), { encoding:'utf8' } );
+  return fs.readFileSync( path.join( remote.app.getAppPath(), 'config', 'datapath.txt' ), { encoding: 'utf8' } );
 }
