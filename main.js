@@ -47,12 +47,7 @@ function newApp() {
 
   remoteMain.enable( win.webContents );
 
-  win.loadFile(
-    url.format({
-      pathname: path.join( __dirname, 'app', 'errorcodes', 'errorcode_create.html' ),
-      slashes: true
-    })
-  );
+  win.loadFile( path.join( __dirname, 'app', 'errorcodes', 'errorcode_create.html' ) );
 
   // Create the Menu
   createMenu( win );
@@ -159,12 +154,7 @@ function createMenu( win ) {
 }
 
 function changePage( win, filename ) {
-  win.loadFile(
-    url.format({
-      pathname: path.join( __dirname, filename ),
-      slashes: true
-    })
-  );
+  win.loadFile( path.join( __dirname, filename ) );
 }
 
 function exportAllData( window ) {
@@ -334,7 +324,7 @@ function openCustomAboutPanel( parent ) {
     }
   });
   remoteMain.enable( win.webContents );
-  win.loadFile( 'app/about/aboutwindow.html' );
+  win.loadFile( path.join( __dirname, 'app', 'about', 'aboutwindow.html' ) );
 }
 
 // Thats not buenno to just copy paste the function from app.js!
