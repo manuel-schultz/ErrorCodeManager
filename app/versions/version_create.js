@@ -7,14 +7,31 @@ const path     = require( 'path' );
 
 $( document ).ready( function() {
   let datapath = dataPath();
+
+  // Decide if Semantic
+  let semantic = JSON.parse( fs.readFileSync( path.join( datapath, 'settings.json' ), { encoding:'utf8' } ) ).settings.semantic
+  if ( semantic ) {
+    $( '#versionnumber-wrap' ).css( 'display', 'none' );
+  } else {
+    $( '#versionnumber-wrap-semantic' ).css( 'display', 'none' );
+  }
 });
 
 function save_version() {
-  let version_number  = $( 'input#versionnumber' ).val();
+  let datapath        = dataPath();
   let version_release = $( 'input#versionrelease' ).val();
+
+  if ( JSON.parse( fs.readFileSync( path.join( datapath, 'settings.json' ), { encoding:'utf8' } ) ).settings.semantic ) {
+    var version_number = $( 'input#versionnumber_semantic1' ).val() + '.' + $( 'input#versionnumber_semantic2' ).val() + '.' + $( 'input#versionnumber_semantic3' ).val();
+    var semantic = [ $( 'input#versionnumber_semantic1' ).val(), $( 'input#versionnumber_semantic2' ).val(), $( 'input#versionnumber_semantic3' ).val() ];
+  } else {
+    var version_number  = $( 'input#versionnumber' ).val();
+    var semantic = null;
+  }
 
   version = {
     "version": version_number,
+    "semantic": semantic,
     "release": version_release
   }
 
@@ -39,7 +56,6 @@ function save_version() {
     return;
   }
 
-  let datapath = dataPath();
   fs.readFile( path.join( datapath, 'apiversions.json' ), function( err, data ) {
     let versions = JSON.parse( data );
 
@@ -71,7 +87,17 @@ function save_version() {
 }
 
 function clear_all() {
-  $( 'input#versionnumber'      ).val( '' );
-  $( 'input#versionrelease'     ).val( '' );
-  $( 'button.error-type-button' ).removeClass( 'active' );
+  $( 'input#versionnumber'           ).val( '' );
+  $( 'input#versionrelease'          ).val( '' );
+  $( 'input#versionnumber_semantic1' ).val( '' );
+  $( 'input#versionnumber_semantic2' ).val( '' );
+  $( 'input#versionnumber_semantic3' ).val( '' );
+  $( 'button.error-type-button'      ).removeClass( 'active' );
+}
+
+function semanticversion_next(e, input) {
+  if ( e.key === '.' && e.code === 'Period' ) {
+    e.preventDefault();
+    $( '#versionnumber_semantic' + ( $( input ).data( 'semanticnumber' ) + 1 ) ).focus();
+  }
 }
