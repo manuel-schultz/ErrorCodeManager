@@ -30,9 +30,9 @@
     <div id="versionnumber-wrap-semantic" class="form-space">
       <label>Version number</label>
       <div style="display: flex; align-items: baseline;">
-        <input id="versionnumber_semantic1" style="width: 32%;" /><label style="">.</label>
-        <input id="versionnumber_semantic2" style="width: 32%;" /><label style="">.</label>
-        <input id="versionnumber_semantic3" style="width: 32%;" />
+        <input id="versionnumber_semantic1" style="width: 32%;" data-semanticnumber="1" onkeydown="semanticversion_next(event, this)" /><label style="">.</label>
+        <input id="versionnumber_semantic2" style="width: 32%;" data-semanticnumber="2" onkeydown="semanticversion_next(event, this)" /><label style="">.</label>
+        <input id="versionnumber_semantic3" style="width: 32%;" data-semanticnumber="3" />
       </div>
     </div>
 

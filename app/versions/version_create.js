@@ -94,3 +94,10 @@ function clear_all() {
   $( 'input#versionnumber_semantic3' ).val( '' );
   $( 'button.error-type-button'      ).removeClass( 'active' );
 }
+
+function semanticversion_next(e, input) {
+  if ( e.key === '.' && e.code === 'Period' ) {
+    e.preventDefault();
+    $( '#versionnumber_semantic' + ( $( input ).data( 'semanticnumber' ) + 1 ) ).focus();
+  }
+}
