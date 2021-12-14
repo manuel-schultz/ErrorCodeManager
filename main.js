@@ -18,6 +18,13 @@ function newApp() {
   }
 
   // create non-existing data-files
+  if ( !fs.existsSync( path.join( datapath, 'settings.json' ) ) ) {
+    let json = { "settings": {
+      "semantic": false
+    }};
+    fs.writeFile( path.join( datapath, 'settings.json' ), JSON.stringify( json, null, '\t' ), function( err, data ) { } );
+  }
+
   if ( !fs.existsSync( path.join( datapath, 'apiversions.json' ) ) ) {
     let json = { "versions": [] }
     fs.writeFile( path.join( datapath, 'apiversions.json' ), JSON.stringify( json, null, '\t' ), function( err, data ) { } );
@@ -63,6 +70,12 @@ function createMenu( win ) {
           label: 'About ' + app.getName(),
           click() {
             openCustomAboutPanel( win );
+          }
+        },
+        {
+          label: 'Settings',
+          click() {
+            changePage( win, path.join('app', 'settings', 'settingswindow.html') );;
           }
         },
         { type: 'separator' },
