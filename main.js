@@ -62,6 +62,7 @@ function newApp() {
 
 function createMenu( win ) {
   let apiDokuPath = fs.readFileSync( path.join( path.resolve( __dirname, 'config' ), 'apidokupath.txt' ), { encoding:'utf8' } );
+  let api_version_hash = get_api_version_hash();
   var template = [
     {
       label: 'ErrorCodeManager',
@@ -99,10 +100,8 @@ function createMenu( win ) {
         },
         { type: 'separator' },
         {
-          label: 'Open API Doku',
-          click() {
-            require( 'electron' ).shell.openExternal( apiDokuPath );
-          }
+          label: 'API Documentations',
+          submenu: api_version_hash
         },
         { role: 'toggleDevTools' },
         { type: 'separator' },
@@ -316,6 +315,23 @@ function clearData( window ) {
       buttons: [ 'Ok' ]
     }
   );
+}
+
+function get_api_version_hash() {
+  var datapath = path.join( app.getPath( 'userData' ), 'data' );
+  let hashes = [];
+  JSON.parse( fs.readFileSync( path.join( datapath, 'apiversions.json' ), { encoding:'utf8' } ) ).versions.forEach( function ( element, index ) {
+    let clickable = ( element.documentation_url != '' );
+    let hash = {
+      label: element.version,
+      enabled: clickable,
+      click() {
+        require( 'electron' ).shell.openExternal( element.documentation_url );
+      }
+    };
+    hashes.push( hash );
+  });
+  return hashes;
 }
 
 function openCustomAboutPanel( parent ) {

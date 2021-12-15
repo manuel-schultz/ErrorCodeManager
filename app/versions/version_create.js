@@ -32,12 +32,13 @@ function save_version() {
   version = {
     "version": version_number,
     "semantic": semantic,
-    "release": version_release
+    "release": version_release,
+    "documentation_url": $( 'input#version_documentation_url' ).val()
   }
 
   var version_failures = [];
   for ( let [key, value] of Object.entries(version)) {
-    if ( !value ) {
+    if ( !value && key !== 'documentation_url' ) {
       version_failures.push( key );
     }
   }
@@ -92,6 +93,7 @@ function clear_all() {
   $( 'input#versionnumber_semantic1' ).val( '' );
   $( 'input#versionnumber_semantic2' ).val( '' );
   $( 'input#versionnumber_semantic3' ).val( '' );
+  $( 'input#version_documentation_url' ).val( '' );
   $( 'button.error-type-button'      ).removeClass( 'active' );
 }
 
