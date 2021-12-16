@@ -25,6 +25,11 @@ function newApp() {
     fs.writeFile( path.join( datapath, 'settings.json' ), JSON.stringify( json, null, '\t' ), function( err, data ) { } );
   }
 
+  if ( !fs.existsSync( path.join( datapath, 'userpreferences.json' ) ) ) {
+    let json = { "preferences": {} };
+    fs.writeFile( path.join( datapath, 'userpreferences.json' ), JSON.stringify( json, null, '\t' ), function( err, data ) { } );
+  }
+
   if ( !fs.existsSync( path.join( datapath, 'apiversions.json' ) ) ) {
     let json = { "versions": [] }
     fs.writeFile( path.join( datapath, 'apiversions.json' ), JSON.stringify( json, null, '\t' ), function( err, data ) { } );
