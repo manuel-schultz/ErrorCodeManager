@@ -41,7 +41,7 @@
       <div class="form-space" style="width: calc(50% - 4px);">
         <label>First Version</label>
         <br />
-        <select id="introduced-in-version"><!-- options are implemented by js function create_version_select_options() --></select>
+        <select id="introduced-in-version" onchange="updateUserPreferencesUsingVersion( this )"><!-- options are implemented by js function create_version_select_options() --></select>
       </div>
     </div>
 

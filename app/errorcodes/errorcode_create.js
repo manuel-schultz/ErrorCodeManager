@@ -23,6 +23,7 @@ function create_version_select_options( datapath ) {
     $.each( apiversionjson.versions, function( index, version ) {
       $( '#introduced-in-version' ).append( new Option( version.version, version.version ) );
     });
+    choose_version_default( datapath );
   });
 }
 
@@ -39,6 +40,21 @@ function create_error_type_buttons( datapath ) {
       );
     });
   });
+}
+
+function choose_version_default( datapath ) {
+  let userPreferences = JSON.parse( fs.readFileSync( path.join( datapath, 'userpreferences.json' ), { encoding:'utf8' } ) ).preferences;
+  if ( typeof userPreferences.usingVersion !== 'undefined' ) {
+    $( '#introduced-in-version' ).val( userPreferences.usingVersion );
+  }
+}
+
+function updateUserPreferencesUsingVersion( selectTag ) {
+  let datapath = dataPath();
+  let userPreferences = JSON.parse( fs.readFileSync( path.join( datapath, 'userpreferences.json' ), { encoding:'utf8' } ) )
+  userPreferences.preferences.usingVersion = $( selectTag ).val();
+  console.log( userPreferences );
+  fs.writeFileSync( path.join( datapath, 'userpreferences.json' ), JSON.stringify( userPreferences, null, '\t' ), function( err, data ) { } );
 }
 
 function choose_error_type( btn ) {
