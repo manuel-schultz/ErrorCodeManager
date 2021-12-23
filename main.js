@@ -27,7 +27,7 @@ function newApp() {
 
   if ( !fs.existsSync( path.join( datapath, 'userpreferences.json' ) ) ) {
     let json = { "preferences": {} };
-    fs.writeFile( path.join( datapath, 'userpreferences.json' ), JSON.stringify( json, null, '\t' ), function( err, data ) { } );
+    fs.writeFileSync( path.join( datapath, 'userpreferences.json' ), JSON.stringify( json, null, '\t' ), function( err, data ) { } );
   }
 
   if ( !fs.existsSync( path.join( datapath, 'apiversions.json' ) ) ) {
@@ -45,9 +45,21 @@ function newApp() {
     fs.writeFile( path.join( datapath, 'errors.json' ), JSON.stringify( json, null, '\t' ), function( err, data ) { } );
   }
 
+  let x = null;
+  let y = null;
+  let width = 560;
+  let height = 940;
+  let userPreferences = JSON.parse( fs.readFileSync( path.join( datapath, 'userpreferences.json' ), { encoding:'utf8' } ) ).preferences;
+  if ( typeof userPreferences.windowXPosition !== 'undefined' ) { x = userPreferences.windowXPosition; }
+  if ( typeof userPreferences.windowYPosition !== 'undefined' ) { y = userPreferences.windowYPosition; }
+  if ( typeof userPreferences.windowHeight !== 'undefined' ) { height = userPreferences.windowHeight; }
+  if ( typeof userPreferences.windowWidth !== 'undefined' ) { width = userPreferences.windowWidth; }
+
   const win = new BrowserWindow({
-    width: 560,
-    height: 940,
+    width: width,
+    height: height,
+    x: x,
+    y: y,
     icon: path.join( __dirname, 'img', 'icon.png' ),
     webPreferences: {
       nodeIntegration: true,
@@ -63,6 +75,18 @@ function newApp() {
 
   // Create the Menu
   createMenu( win );
+
+  win.on( "close", function() {
+    let bounds = win.getBounds();
+    let userPreferences = JSON.parse( fs.readFileSync( path.join( datapath, 'userpreferences.json' ), { encoding:'utf8' } ) );
+
+    userPreferences.preferences.windowXPosition = bounds.x;
+    userPreferences.preferences.windowYPosition = bounds.y;
+    userPreferences.preferences.windowHeight    = bounds.height;
+    userPreferences.preferences.windowWidth     = bounds.width;
+
+    fs.writeFileSync( path.join( datapath, 'userpreferences.json' ), JSON.stringify( userPreferences, null, '\t' ), function( err, data ) { } );
+  });
 }
 
 function createMenu( win ) {
@@ -340,9 +364,16 @@ function get_api_version_hash() {
 }
 
 function openCustomAboutPanel( parent ) {
+  let bounds = parent.getBounds();
+  var winWidth = bounds.width - 20;
+  var winHeight = bounds.height - 20;
+  var winX = bounds.x + 10;
+  var winY = bounds.y + 10;
   var win = new BrowserWindow({
-    width: 530,
-    height: 770,
+    width: winWidth,
+    height: winHeight,
+    x: winX,
+    y: winY,
     resizable: false,
     title: 'About ' + app.getName(),
     icon: path.join( __dirname, 'img', 'icon.png' ),
@@ -357,6 +388,8 @@ function openCustomAboutPanel( parent ) {
       enableRemoteModule: true
     }
   });
+
+  win.setBounds({ x: winX, y: winY, width: winWidth, height: winHeight })
   remoteMain.enable( win.webContents );
   win.loadFile( path.join( __dirname, 'app', 'about', 'aboutwindow.html' ) );
 }
