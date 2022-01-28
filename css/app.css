@@ -1,4 +1,6 @@
 @import url( "checkbox-switch.css" );
+@import url( "darktheme.css" );
+@import url( "lighttheme.css" );
 
 body {
   padding: 55px 10px 10px 10px;
@@ -11,7 +13,6 @@ h1 {
 
 hr {
   border-top-width: 0px;
-  background-color: #eee;
 }
 
 button {
@@ -37,50 +38,33 @@ label {
 }
 
 button.btn-default {
-  background-color: #F8F8F8;
-  color: #000000;
   border-radius: 4px;
-  border: 1px solid #cccccc;
+  border: 1px solid;
   padding-top: 15px;
     padding-bottom: 15px;
 }
 
 button.error-type-button {
-  background-color: #F05147;
-  border-color: #D90B37;
   display: flex;
   flex-direction: column;
   align-items: center;
   border-radius: 15px;
 }
 
-button.menu-button {
-  background-color: #F05147;
-  border-color: #D90B37;
-}
-
-button.active {
-  background-color: #F01501;
-}
-
 input, select {
   width: 100%;
   height: 50px;
   font-size: 35px;
-  background-color: #ffffff;
   border-radius: 25px;
-  border: 1px solid #aaaaaa;
+  border: 1px solid;
   padding: 5px 20px;
 }
 
 button.submit {
-  border-color: #D90B37;
-  background-color: #F01501;
   width: 100%;
   height: 50px;
   border-radius: 25px;
   font-size: 20px;
-  box-shadow: 3px 3px 5px #888;
 }
 
 #menu-field button {
@@ -106,7 +90,6 @@ div.type-button-space button {
 }
 
 input#error-code-prefix {
-  color: #000000;
   border-right-width: 0px;
   border-radius: 25px 0px 0px 25px;
   width: 42px;
@@ -120,7 +103,7 @@ input#error-code {
 }
 
 div.bordered-box {
-  border: 1px solid #B25858;
+  border: 1px solid;
 }
 
 div.errorcode-box,
@@ -141,4 +124,8 @@ input#error-code::-webkit-inner-spin-button {
 
 div#app-description {
   font-style: italic;
+}
+
+a {
+  font-weight: bold;
 }

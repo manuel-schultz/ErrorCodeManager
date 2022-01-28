@@ -20,7 +20,8 @@ function newApp() {
   // create non-existing data-files
   if ( !fs.existsSync( path.join( datapath, 'settings.json' ) ) ) {
     let json = { "settings": {
-      "semantic": false
+      "semantic": false,
+      "darkmode": false
     }};
     fs.writeFile( path.join( datapath, 'settings.json' ), JSON.stringify( json, null, '\t' ), function( err, data ) { } );
   }

@@ -1,0 +1,59 @@
+body.darktheme {
+  background-color: #121212;
+  color: #fff;
+}
+
+body.darktheme hr {
+  border-color: #444;
+}
+
+body.darktheme button.btn-default {
+  color: #fff;
+  border-color: #444;
+  background-color: #444;
+}
+
+body.darktheme button.error-type-button {
+  background-color: #444;
+  border-color: #D90B37;
+}
+
+body.darktheme button.menu-button {
+  background-color: #444;
+  border-color: #333;
+}
+
+body.darktheme button.active {
+  background-color: #B80F00;
+}
+
+body.darktheme input, body.darktheme select {
+  background-color: #444;
+  border-color: #333;
+  color: #fff;
+}
+
+body.darktheme button.submit {
+  color: #fff;
+  border-color: #D90B37;
+  background-color: #B80F00;
+  box-shadow: 1px 1px 5px #9e0828;
+}
+
+body.darktheme input#error-code-prefix {
+  color: #fff;
+}
+
+body.darktheme div.bordered-box {
+  border-color: #444;
+}
+
+body.darktheme input:focus,
+body.darktheme select:focus {
+    outline: none;
+    border-color: #D90B37;
+}
+
+body.darktheme a {
+  color: #888;
+}
