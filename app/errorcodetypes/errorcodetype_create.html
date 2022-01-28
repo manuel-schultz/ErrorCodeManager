@@ -10,7 +10,13 @@
     <script src="../../js/app.js"></script>
     <script src="./errorcodetype_create.js"></script>
   </head>
-  <body>
+  <script>
+    if ( JSON.parse( require( 'fs' ).readFileSync( require( 'path' ).join( dataPath(), 'settings.json' ), { encoding:'utf8' } ) ).settings.darkmode ) {
+      document.write( "<body style='padding: 65px 10px 10px 10px;' class='darktheme'>" );
+    } else {
+      document.write( "<body style='padding: 65px 10px 10px 10px;' class='lighttheme'>" );
+    }
+  </script>
     <div id="menu-field">
       <button class="btn-default menu-button active">New ErrorType</button>
       <button class="btn-default menu-button" onclick="go_to( './errorcodetype_index.html' )">Display ErrorTypes</button>

@@ -10,6 +10,29 @@ $( document ).ready( function() {
 
   create_version_select_options( datapath );
   create_error_type_buttons( datapath );
+
+  $( 'input#error-code' ).focusin( function() {
+    if ( $( 'body' ).hasClass( 'darktheme' ) ) {
+      console.log($( 'input#error-code-prefix' ).css('borderColor'));
+      $( 'input#error-code-prefix' ).css( 'borderColor', '#D90B37');
+    } else if ( $( 'body' ).hasClass( 'lighttheme' ) ) {
+      $( 'input#error-code-prefix' ).css( 'borderColor', '#D90B37');
+      $( 'input#error-code-prefix' ).css( 'boxShadow', '0 0 4px #D90B37');
+      $( 'input#error-code-prefix' ).css( 'clipPath', 'inset(-4px 0px -4px -4px)');
+      $( 'input#error-code' ).css( 'clipPath', 'inset(-4px -4px -4px 0px)');
+    }
+  });
+
+  $( 'input#error-code' ).focusout( function() {
+    if ( $( 'body' ).hasClass( 'darktheme' ) ) {
+      $( 'input#error-code-prefix' ).css( 'borderColor', '#333');
+    } else if ( $( 'body' ).hasClass( 'lighttheme' ) ) {
+      $( 'input#error-code-prefix' ).css( 'borderColor', '#aaa');
+      $( 'input#error-code-prefix' ).css( 'boxShadow', 'none');
+      $( 'input#error-code-prefix' ).css( 'clipPath', 'inset(0px 0px 0px 0px)');
+      $( 'input#error-code' ).css( 'clipPath', 'inset(0px 0px 0px 0px)');
+    }
+  });
 });
 
 function create_version_select_options( datapath ) {

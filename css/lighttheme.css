@@ -1,0 +1,60 @@
+body.lighttheme {
+  background-color: #fff;
+  color: #000;
+}
+
+body.lighttheme hr {
+  border-color: #eee;
+}
+
+body.lighttheme button.btn-default {
+  color: #000;
+  border-color: #ccc;
+  background-color: #F8F8F8;
+}
+
+body.lighttheme button.error-type-button {
+  background-color: #F05147;
+  border-color: #D90B37;
+}
+
+body.lighttheme button.menu-button {
+  background-color: #F05147;
+  border-color: #D90B37;
+}
+
+body.lighttheme button.active {
+  background-color: #F01501;
+}
+
+body.lighttheme input, body.lighttheme select {
+  background-color: #fff;
+  border-color: #aaa;
+  color: #000
+}
+
+body.lighttheme button.submit {
+  color: #000;
+  border-color: #D90B37;
+  background-color: #F01501;
+  box-shadow: 3px 3px 5px #888;
+}
+
+body.lighttheme input#error-code-prefix {
+  color: #000;
+}
+
+body.lighttheme div.bordered-box {
+  border-color: #B25858;
+}
+
+body.lighttheme input:focus,
+body.lighttheme select:focus {
+  outline: none;
+  box-shadow: 0 0 4px #D90B37;
+  border-color: #D90B37;
+}
+
+body.lighttheme a {
+  color: #F05147;
+}
