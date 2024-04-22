@@ -18,49 +18,17 @@ $( document ).ready( function() {
 });
 
 function save_version() {
-  let datapath        = dataPath();
-  let version_release = $( 'input#versionrelease' ).val();
+  let datapath = dataPath();
+  let version  = extract_form_data();
 
-  if ( JSON.parse( fs.readFileSync( path.join( datapath, 'settings.json' ), { encoding:'utf8' } ) ).settings.semantic ) {
-    var version_number = $( 'input#versionnumber_semantic1' ).val() + '.' + $( 'input#versionnumber_semantic2' ).val() + '.' + $( 'input#versionnumber_semantic3' ).val();
-    var semantic = [ $( 'input#versionnumber_semantic1' ).val(), $( 'input#versionnumber_semantic2' ).val(), $( 'input#versionnumber_semantic3' ).val() ];
-  } else {
-    var version_number  = $( 'input#versionnumber' ).val();
-    var semantic = null;
-  }
-
-  version = {
-    "version": version_number,
-    "semantic": semantic,
-    "release": version_release,
-    "documentation_url": $( 'input#version_documentation_url' ).val()
-  }
-
-  var version_failures = [];
-  for ( let [key, value] of Object.entries(version)) {
-    if ( !value && key !== 'documentation_url' ) {
-      version_failures.push( key );
-    }
-  }
-
-  if ( version_failures.length !== 0 ) {
-    for ( let entry of version_failures ) {
-      version_failures[ version_failures.indexOf( entry ) ] = '• ' + entry.capitalizeEveryWord()
-    }
-
-    remote.dialog.showMessageBoxSync({
-      title: 'Error',
-      message: 'Wrong data submitted!',
-      type: 'error',
-      detail: 'Following Fields don\'t have acceptable values:\n' + version_failures.join( ',\n' )
-    });
+  if (!validate_version_object(version)) {
     return;
   }
 
   fs.readFile( path.join( datapath, 'apiversions.json' ), function( err, data ) {
     let versions = JSON.parse( data );
 
-    if ( searchInJsonForIndex( versions.versions, 'version', version_number.toString() ) !== false ) {
+    if ( searchInJsonForIndex( versions.versions, 'version', version.version.toString() ) !== false ) {
       remote.dialog.showMessageBoxSync({
         title: 'Error',
         message: 'Duplicated entry attribute!',
@@ -69,7 +37,7 @@ function save_version() {
       });
       return;
     }
-
+    
     versions.versions.push( version );
 
     fs.writeFile( path.join( datapath, 'apiversions.json' ), JSON.stringify( versions, null, '\t' ), function( err, data ) {
@@ -85,6 +53,74 @@ function save_version() {
       });
     });
   });
+}
+
+function extract_form_data() {
+  let version_release       = $('input#versionrelease').val();
+  let version_number_object = extract_form_version_number();
+
+  version = {
+    "version": version_number_object['string'],
+    "semantic": version_number_object['array'],
+    "release": version_release,
+    "documentation_url": $('input#version_documentation_url').val()
+  };
+
+  return version;
+}
+
+function validate_version_object(version) {
+  var version_failures = [];
+  if (version['version'] === '0.0.0') {
+    version_failures.push('Version number');
+  }
+
+  if (version_failures.length !== 0) {
+    for (let entry of version_failures) {
+      version_failures[version_failures.indexOf(entry)] = '• ' + entry.capitalizeEveryWord();
+    }
+
+    remote.dialog.showMessageBoxSync({
+      title: 'Error',
+      message: 'Wrong data submitted!',
+      type: 'error',
+      detail: 'Following Fields don\'t have acceptable values:\n' + version_failures.join(',\n')
+    });
+    return false;
+  } else {
+    return true;
+  }
+}
+
+function extract_form_version_number() {
+  let datapath = dataPath();
+  let semantic_array;
+  let semantic_string;
+  if (JSON.parse(fs.readFileSync(path.join(datapath, 'settings.json'), { encoding: 'utf8' })).settings.semantic) {
+    semantic_array = (
+      $('input#versionnumber_semantic1').val() + '.' + 
+      $('input#versionnumber_semantic2').val() + '.' +
+      $('input#versionnumber_semantic3').val()
+    ).split('.');
+
+    semantic_string = semantic_array.map(value => {
+      return (value === undefined || value === null || value === '') ? 0 : value;
+    }).join('.');
+  } else {
+    semantic_array = $('input#versionnumber').val().split('.');
+    if (semantic_array == '') {
+      semantic_array = [];
+    }
+    while (semantic_array.length < 3) {
+      semantic_array.push('0');
+    }
+    semantic_string = semantic_array.join('.');
+  }
+
+  return {
+    array: semantic_array,
+    string: semantic_string
+  }
 }
 
 function clear_all() {
