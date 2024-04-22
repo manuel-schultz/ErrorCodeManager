@@ -43,7 +43,7 @@ function create_version_select_options( datapath ) {
 
     let apiversionjson = JSON.parse( data );
     // apiversionjson = sortApiversionjson( apiversionjson );
-    $.each( apiversionjson.versions, function( index, version ) {
+    $.each(sortSemanticVersions(apiversionjson.versions), function( index, version ) {
       $( '#introduced-in-version' ).append( new Option( version.version, version.version ) );
     });
     choose_version_default( datapath );

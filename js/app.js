@@ -45,6 +45,43 @@ function searchInJsonForIndex( json, property, value ) {
   }
 }
 
+function sortSemanticVersions(fileVersions, orderRequest = 'DESC') {
+  const order = orderRequest;
+
+  function compareSemanticVersions(a, b) {
+    let versionA  = a.semantic.map(semanticPart => convertSemanticPartToValue(semanticPart));
+    let versionB  = b.semantic.map(semanticPart => convertSemanticPartToValue(semanticPart));
+    let maxLength = Math.max(versionA.length, versionB.length);
+
+    for (let i = 0; i < maxLength; i++) {
+      let partA = i < versionA.length ? versionA[i] : 0;
+      let partB = i < versionB.length ? versionB[i] : 0;
+
+      if (partA !== partB) {
+        if (order.toUpperCase() === 'ASC') {
+          return partA - partB;
+        } else {
+          return partB - partA;
+        }
+      }
+    }
+
+    return 0;
+  }
+
+  function convertSemanticPartToValue(semanticPart) {
+    if (!isNaN(semanticPart)) {
+      return parseInt(semanticPart) * 100; 
+    } else {
+      const numericPart = parseInt(semanticPart);
+      const alphaPart = semanticPart.replace(/\d+/g, '');
+      return numericPart * 100 + (alphaPart.charCodeAt(0) - 50);
+    }
+  }
+
+  return fileVersions.sort(compareSemanticVersions);
+}
+
 function dataPath() {
   return fs.readFileSync( path.join( remote.app.getAppPath(), 'config', 'datapath.txt' ), { encoding: 'utf8' } );
 }

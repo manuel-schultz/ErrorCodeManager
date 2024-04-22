@@ -350,7 +350,7 @@ function clearData( window ) {
 function get_api_version_hash() {
   var datapath = path.join( app.getPath( 'userData' ), 'data' );
   let hashes = [];
-  JSON.parse( fs.readFileSync( path.join( datapath, 'apiversions.json' ), { encoding:'utf8' } ) ).versions.forEach( function ( element, index ) {
+  sortSemanticVersions( JSON.parse( fs.readFileSync( path.join( datapath, 'apiversions.json' ), { encoding:'utf8' } ) ).versions).forEach( function ( element, index ) {
     let clickable = ( element.documentation_url != '' );
     let hash = {
       label: element.version,
@@ -407,6 +407,45 @@ function searchInJsonForIndex( json, property, value ) {
       return i;
     }
   }
+}
+
+// Thats not buenno to just copy paste the function from app.js!
+// TODO: Find a way to call app.js' function instead!
+function sortSemanticVersions(fileVersions, orderRequest = 'DESC') {
+  const order = orderRequest;
+
+  function compareSemanticVersions(a, b) {
+    let versionA = a.semantic.map(semanticPart => convertSemanticPartToValue(semanticPart));
+    let versionB = b.semantic.map(semanticPart => convertSemanticPartToValue(semanticPart));
+    let maxLength = Math.max(versionA.length, versionB.length);
+
+    for (let i = 0; i < maxLength; i++) {
+      let partA = i < versionA.length ? versionA[i] : 0;
+      let partB = i < versionB.length ? versionB[i] : 0;
+
+      if (partA !== partB) {
+        if (order.toUpperCase() === 'ASC') {
+          return partA - partB;
+        } else {
+          return partB - partA;
+        }
+      }
+    }
+
+    return 0;
+  }
+
+  function convertSemanticPartToValue(semanticPart) {
+    if (!isNaN(semanticPart)) {
+      return parseInt(semanticPart) * 100;
+    } else {
+      const numericPart = parseInt(semanticPart);
+      const alphaPart = semanticPart.replace(/\d+/g, '');
+      return numericPart * 100 + (alphaPart.charCodeAt(0) - 50);
+    }
+  }
+
+  return fileVersions.sort(compareSemanticVersions);
 }
 
 app.on("ready", newApp);
