@@ -98,9 +98,9 @@ function extract_form_version_number() {
   let semantic_string;
   if (JSON.parse(fs.readFileSync(path.join(datapath, 'settings.json'), { encoding: 'utf8' })).settings.semantic) {
     semantic_array = (
-      $('input#versionnumber_semantic1').val() + '.' + 
-      $('input#versionnumber_semantic2').val() + '.' +
-      $('input#versionnumber_semantic3').val()
+      ($('input#versionnumber_semantic1').val() || '0') + '.' +
+      ($('input#versionnumber_semantic2').val() || '0') + '.' +
+      ($('input#versionnumber_semantic3').val() || '0')
     ).split('.');
 
     semantic_string = semantic_array.map(value => {
