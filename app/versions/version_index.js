@@ -15,7 +15,7 @@ function display_versions() {
 
     let versions = JSON.parse( data );
 
-    $.each( versions.versions, function( index, version ) {
+    $.each( sortSemanticVersions( versions.versions ), function( index, version ) {
       let div = "<div class='bordered-box version-box'>" +
                 "<div style='width: 24px; text-align: right; order: 2;'>" + "<button class='btn btn-default' style='height: 20px; width: 20px; padding: 2px;' data-version='" + version.version + "' onclick='delete_version( this )'>X</button>" + "</div>" +
                 "<div style='width: calc(100% - 24px); order: 1; text-align: center; font-weight: bold; font-size: 30px;'>" + version.version + "</div>" +
